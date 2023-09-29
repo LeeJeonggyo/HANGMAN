@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <title>행맨 홈</title>
+</head>
+<body>
+    <div class="mainTop"></div>
+    <div class="main">
+        <div class="left">
+            <img src="/gif/home.gif" alt=""/>
+        </div>
+        <div class="center">
+            <span class="title">WELCOME<br>TO<br>HANGMAN</span>
+        </div>
+        <div class="right1">
+            <img src="/gif/home.gif" alt=""/>
+        </div>
+    </div>
+    <div class="mainBottom">
+        <button class="btnPlay">P L A Y</button>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+    /*<![CDATA[*/
+        window.onload = () => {
+            page_event();
+        }
+
+        function page_event(){
+            // 게임 화면으로 이동
+            $('.btnPlay').on('click',function(){
+                location.href="/hangman/play";
+            });
+        }
+
+    /*]]>*/
+    </script>
+</body>
+</html>
