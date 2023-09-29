@@ -124,3 +124,39 @@ body {
     text-align : right;
     margin: auto 1%;
 }
+
+.alphabetTb{
+    width: 80%;
+    height: 80%;
+    color: white;
+    font-size: xxx-large;
+    text-align: center;
+    table-layout:fixed;
+    border: 1px solid #6e6e6e;
+    border-collapse: collapse;
+}
+
+.alphabetTb td {
+    cursor: pointer;
+    font-weight: bold;
+    border: 1px solid #6e6e6e;
+}
+
+.alphabetTb td:hover {
+    background-color:#8a0303;
+    color : #dddddd;
+    border-color:#eeeeee;
+    transition: 0.3s;
+}
+
+.fail {
+    background-color:#8a0303;
+    color : #dddddd;
+    border-color:#eeeeee;
+}
+
+.success {
+    background-color:#8a0303;
+    color : green;
+    border-color:#eeeeee;
+}
