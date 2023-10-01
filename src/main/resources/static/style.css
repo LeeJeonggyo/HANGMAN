@@ -52,6 +52,7 @@ body {
     width: 80%;
     height: 100%;
     float: right;
+    position: relative;
     box-sizing: border-box;
 }
 
@@ -159,4 +160,36 @@ body {
     background-color:#8a0303;
     color : green;
     border-color:#eeeeee;
+}
+
+.noShow {
+    display : none;
+}
+
+
+.answerTb{
+    width: 80%;
+    height: 17%;
+    color: white;
+    font-size: xxx-large;
+    text-align: center;
+    table-layout:fixed;
+    border-spacing: 7px;
+    border-collapse: separate;
+    position: absolute;
+    bottom: 10%;
+    right: 10%;
+}
+
+.answerTb td {
+    cursor: default;
+    font-weight: bold;
+}
+
+.tdY {
+    border-bottom: 4px solid red;
+}
+
+.tdN {
+    border-bottom: 4px solid black;
 }
