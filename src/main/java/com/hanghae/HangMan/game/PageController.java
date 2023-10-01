@@ -1,6 +1,7 @@
 package com.hanghae.HangMan.game;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -22,7 +23,8 @@ public class PageController {
      * <a href="https://hanghaeplus-coyukdae.oopy.io/">항해 플러스: 제1회 코육대</a>
      */
     @RequestMapping(value = "/play")
-    public String play(){
+    public String play(Model model){
+        model.addAttribute("world","apple");
         return "/play";
     }
 }

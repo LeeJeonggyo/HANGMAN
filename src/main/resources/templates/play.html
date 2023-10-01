@@ -12,9 +12,20 @@
     </div>
     <div class="main">
         <div class="left">
-            <img src="/gif/home.gif" alt=""/>
+            <img id="wrong2" src="/img/2.png" alt="2" class="noShow"/>
+            <img id="wrong3" src="/img/3.png" alt="3" class="noShow"/>
+            <img id="wrong4" src="/img/4.png" alt="4" class="noShow"/>
+            <img id="wrong5" src="/img/5.png" alt="5" class="noShow"/>
+            <img id="wrong6" src="/img/6.png" alt="6" class="noShow"/>
+            <img id="wrong7" src="/img/7.png" alt="7" class="noShow"/>
+            <img id="wrong8" src="/gif/home.gif" alt="8" class="noShow"/>
         </div>
         <div class="right2">
+            <table class="answerTb">
+                <tbody>
+                    <tr id="answerTr"></tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="mainBottom">
@@ -38,37 +49,146 @@
         </table>
     </div>
 
-    <script>
-        /*<![CDATA[*/
-            window.onload = () => {
-                var entries = performance.getEntriesByType("navigation")[0];
-                if (entries.type === 'reload') location.href="/hangman/home";   // 새로고침시 홈화면으로 이동.
-                else page_event();
-            }
+    <!-- 팝업 -->
+    <div class="popup_layer popup_hidden" id="popup_layer" style="display:none;">
+        <div class="popup_box">
+            <!--팝업 컨텐츠 영역-->
+            <div class="popup_cont">
+                <div id="result" class="result"></div>
+                <div class="cor">정답 : <span id="correct">APPLE</span></div>
+            </div>
+            <!-- 팝업 버튼 영역 -->
+            <div class="popup_btn">
+                <button class="btn1" id="play">PLAY</button>
+                <button class="btn1" id="home">HOME</button>
+            </div>
+        </div>
+    </div>
 
-            function page_event(){
-                // 새로고침 방지
-                $(document).on('keydown',function(){
-                    if((event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82)) || (event.keyCode == 116)) {
-                        event.keyCode = 0;
-                        event.cancelBubble = true;
-                        event.returnValue = false;
-
-                        if(confirm("홈화면으로 이동합니다.\n이동하시겠습니까?")){
-                            location.href="/hangman/home";
-                        }
-                    }
-                });
-
-                // 알파벳 선택
-                $('.alphabetTb td').on('click',function(){
-                    $(this).attr('class','fail');
-                });
-            }
-
-
-        /*]]>*/
-    </script>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+    /*<![CDATA[*/
+
+        window.onload = () => {
+            var entries = performance.getEntriesByType("navigation")[0];
+            if (entries.type === 'reload') location.href="/hangman/home";   // 새로고침시 홈화면으로 이동.
+            else {
+                page_init('[[ ${world} ]]');
+                page_event();
+            }
+        }
+
+        var coll = 0;
+        var wrong = 0;
+        function page_init(world){
+            // 값 초기화
+            coll = 0;
+            wrong = 0;
+
+            // 문제 출제
+            let worldLen = world.length;
+            let html = '';
+            if (worldLen < 13) html += "<td class='tdN'></td>".repeat(13-worldLen);
+            for (var i = 0; i < worldLen; i++) html += `<td class='tdY' id='answer${i}'></td>`;
+            $('#answerTr').html(html);
+            $('#correct').text(world.toUpperCase());
+        }
+
+        function page_event(){
+            // 새로고침 방지
+            $(document).on('keydown',function(){
+                if((event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82)) || (event.keyCode == 116)) {
+                    event.keyCode = 0;
+                    event.cancelBubble = true;
+                    event.returnValue = false;
+
+                    if(confirm("홈화면으로 이동합니다.\n이동하시겠습니까?")){
+                        location.href="/hangman/home";
+                    }
+                }
+            });
+
+            // 알파벳 선택
+            $('.alphabetTb td').on('click',function(){
+                if ($(this).attr('class') !== 'success'
+                        && $(this).attr('class') !== 'fail') {
+                    choice_char(this);
+                }
+                else alert("이미 선택한 알파벳입니다.");
+            });
+
+            // play 버튼 클릭
+            $('#play').on('click',function(){
+                location.href="/hangman/play";
+            });
+
+            // home 버튼 클릭
+            $('#home').on('click',function(){
+                location.href="/hangman/home";
+            });
+        }
+
+        function choice_char(t){
+            const world = '[[ ${world} ]]'.toUpperCase();
+            const text = $(t).text();
+            const choice = world.match(new RegExp(`[${text}]`, 'g'));
+
+            if (choice) {
+                const choiceLen = choice.length;
+
+                $(t).attr('class','success');
+
+                let front = 0;
+                let next = world.indexOf(text);
+
+                do {
+                    front = next;
+                    $(`#answer${front}`).text(text);
+                    coll += 1;
+                    next += world.substring(front+1).indexOf(text)+1;
+                } while(front < next);
+
+
+                if(coll === world.length){
+                    $('#result').text('SUCCESS');
+                    $('.popup_layer').addClass('popup_success');
+                    $('.popup_cont').addClass('popup_cont_success');
+                    $('.popup_layer').show();
+                    $('.popup_layer').removeClass('popup_hidden');
+                }
+            } else {
+                wrong += 1;
+                $(t).attr('class','fail');
+
+                switch (wrong){
+                    case 1:
+                        $('.hang').show();
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        $(`#wrong${wrong-1}`).hide();
+                    case 2:
+                        $(`#wrong${wrong}`).show();
+                        break;
+                }
+
+                if (wrong > 7) {
+                    $('#result').text('F A I L');
+                    $('.popup_layer').addClass('popup_fail');
+                    $('.popup_cont').addClass('popup_cont_fail');
+                    $('.popup_layer').show();
+                    $('.popup_layer').removeClass('popup_hidden');
+                }
+            }
+
+        }
+
+    /*]]>*/
+    </script>
+
 </body>
 </html>
