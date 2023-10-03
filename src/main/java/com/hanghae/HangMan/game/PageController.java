@@ -24,6 +24,7 @@ public class PageController {
      */
     @RequestMapping(value = "/play")
     public String play(Model model){
+        // 30개 이상 단어를 추가 및 랜덤으로 출력될 수 있도록 구현.
         model.addAttribute("world","apple");
         return "/play";
     }
